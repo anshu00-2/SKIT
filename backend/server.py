@@ -387,7 +387,7 @@ async def init_sample_doctors():
     
     for doctor_data in sample_doctors:
         # Check if user already exists
-        existing_user = await db.users.find_one({"email": doctor_data["email"]})
+        existing_user = await db.users.find_one({"email": doctor_data["email"]}, {"_id": 0})
         
         if not existing_user:
             # Create user
