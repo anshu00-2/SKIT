@@ -138,7 +138,7 @@ async def process_session(request: Request, response: Response):
             user_data = auth_response.json()
         
         # Check if user exists
-        existing_user = await db.users.find_one({"email": user_data["email"]})
+        existing_user = await db.users.find_one({"email": user_data["email"]}, {"_id": 0})
         
         if not existing_user:
             # Create new user
