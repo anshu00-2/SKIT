@@ -181,6 +181,9 @@ async def process_session(request: Request, response: Response):
         
         return {"user": user.dict(), "success": True}
         
+    except HTTPException:
+        # Re-raise HTTP exceptions with correct status codes
+        raise
     except Exception as e:
         print(f"Session processing error: {e}")
         raise HTTPException(status_code=500, detail="Session processing failed")
