@@ -290,11 +290,11 @@ async def get_user_appointments(user: User = Depends(require_auth)):
     """Get user's appointments"""
     if user.role == "doctor":
         # Get appointments for this doctor
-        appointments = await db.appointments.find({"doctor_id": user.id}).to_list(None)
+        appointments = await db.appointments.find({"doctor_id": user.id}, {"_id": 0}).to_list(None)
         
         # Add patient info
         for appointment in appointments:
-            patient = await db.users.find_one({"id": appointment["patient_id"]})
+            patient = await db.users.find_one({"id": appointment["patient_id"]}, {"_id": 0})
             if patient:
                 appointment["patient"] = {
                     "name": patient["name"],
@@ -302,13 +302,13 @@ async def get_user_appointments(user: User = Depends(require_auth)):
                 }
     else:
         # Get appointments for this patient
-        appointments = await db.appointments.find({"patient_id": user.id}).to_list(None)
+        appointments = await db.appointments.find({"patient_id": user.id}, {"_id": 0}).to_list(None)
         
         # Add doctor info
         for appointment in appointments:
-            doctor_profile = await db.doctor_profiles.find_one({"id": appointment["doctor_id"]})
+            doctor_profile = await db.doctor_profiles.find_one({"id": appointment["doctor_id"]}, {"_id": 0})
             if doctor_profile:
-                doctor_user = await db.users.find_one({"id": doctor_profile["user_id"]})
+                doctor_user = await db.users.find_one({"id": doctor_profile["user_id"]}, {"_id": 0})
                 if doctor_user:
                     appointment["doctor"] = {
                         "name": doctor_user["name"],
