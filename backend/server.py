@@ -225,11 +225,11 @@ async def create_doctor_profile(
 @api_router.get("/doctors")
 async def get_available_doctors():
     """Get all available doctors"""
-    doctors = await db.doctor_profiles.find({"available": True}).to_list(None)
+    doctors = await db.doctor_profiles.find({"available": True}, {"_id": 0}).to_list(None)
     
     # Get user data for each doctor
     for doctor in doctors:
-        user = await db.users.find_one({"id": doctor["user_id"]})
+        user = await db.users.find_one({"id": doctor["user_id"]}, {"_id": 0})
         if user:
             doctor["user"] = {
                 "name": user["name"],
