@@ -335,7 +335,7 @@ async def join_appointment(appointment_id: str, user: User = Depends(require_aut
 @api_router.post("/appointments/{appointment_id}/start")
 async def start_appointment(appointment_id: str, user: User = Depends(require_auth)):
     """Start appointment video call"""
-    appointment = await db.appointments.find_one({"id": appointment_id})
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
     
     if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
