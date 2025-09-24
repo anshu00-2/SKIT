@@ -99,7 +99,7 @@ async def get_current_user(request: Request) -> Optional[User]:
         return None
     
     # Get user
-    user = await db.users.find_one({"id": session["user_id"]})
+    user = await db.users.find_one({"id": session["user_id"]}, {"_id": 0})
     return User(**user) if user else None
 
 async def require_auth(request: Request) -> User:
