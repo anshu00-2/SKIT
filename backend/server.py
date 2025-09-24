@@ -321,7 +321,7 @@ async def get_user_appointments(user: User = Depends(require_auth)):
 @api_router.get("/appointments/{appointment_id}/join")
 async def join_appointment(appointment_id: str, user: User = Depends(require_auth)):
     """Get appointment details for joining video call"""
-    appointment = await db.appointments.find_one({"id": appointment_id})
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
     
     if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
