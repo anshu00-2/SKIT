@@ -241,7 +241,7 @@ async def get_available_doctors():
 @api_router.get("/doctors/profile")
 async def get_doctor_profile(user: User = Depends(require_doctor)):
     """Get current doctor's profile"""
-    profile = await db.doctor_profiles.find_one({"user_id": user.id})
+    profile = await db.doctor_profiles.find_one({"user_id": user.id}, {"_id": 0})
     if not profile:
         raise HTTPException(status_code=404, detail="Doctor profile not found")
     return {"profile": profile}
